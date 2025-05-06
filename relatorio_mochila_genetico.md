@@ -1,84 +1,73 @@
-# Problema da Mochila 0/1 com Algoritmo Genético
+# Relatório: Solução para o Problema da Mochila com Algoritmo Genético
 
-## 👥 Integrantes
-- Leonardo (Leo) – Engenharia de Software, Católica SC
+## Objetivo
 
-## 🎯 Objetivo
-Resolver o problema da mochila 0/1 utilizando um algoritmo bio-inspirado (Algoritmo Genético), aplicando técnicas heurísticas para encontrar soluções próximas do ótimo em problemas complexos de otimização.
+O objetivo deste trabalho foi implementar uma solução para o Problema da Mochila 0/1 utilizando um Algoritmo Genético (GA). O algoritmo foi adaptado para maximizar o valor de itens selecionados, sem exceder a capacidade da mochila, utilizando técnicas de evolução genética: seleção, crossover, e mutação.
 
-## 📦 Descrição do Problema
+## Descrição do Problema da Mochila 0/1
 
-Dado:
-- Um conjunto de `n` itens com:
-  - Peso: `w[i]`
-  - Valor: `v[i]`
-- Uma mochila com capacidade máxima `W`
+O Problema da Mochila 0/1 é um problema clássico de otimização, no qual:
 
-Objetivo:
-- Escolher um subconjunto de itens que maximize o valor total, sem exceder o peso da mochila.
+- Um conjunto de **n itens** está disponível, cada item tem:
+  - Um **peso** `w[i]`
+  - Um **valor** `v[i]`
+- Há uma **mochila** com **capacidade limitada** `W`.
+- O objetivo é selecionar um subconjunto de itens de forma que:
+  - O **valor total** dos itens seja **máximo**.
+  - O **peso total** dos itens selecionados não ultrapasse a **capacidade** da mochila.
 
-Exemplo usado:
-```python
-pesos = [2, 3, 4, 5]
-valores = [3, 4, 5, 6]
-capacidade = 5
-```
+## Algoritmo Genético Implementado
 
----
+### Componentes do Algoritmo
 
-## 🧬 Algoritmo Utilizado: Algoritmo Genético (GA)
+1. **Representação dos Indivíduos**:
+   - Cada indivíduo é representado por um vetor binário, onde cada bit indica se um item foi incluído (1) ou não (0).
+   
+2. **Função de Avaliação**:
+   - A função de avaliação calcula o valor total de um indivíduo, penalizando soluções que excedem a capacidade da mochila.
+   
+3. **Seleção**:
+   - A seleção é feita por **torneio** entre 3 indivíduos aleatórios da população. O vencedor é o indivíduo com o maior valor total, sem exceder a capacidade.
 
-### 🔹 Representação
-- Cada indivíduo é um vetor binário (ex: `[1, 0, 1, 0]`)
-- 1 indica que o item está incluído; 0, que está fora da mochila
+4. **Crossover (Recombinação)**:
+   - O crossover é realizado por **ponto único**, onde os genes dos pais são combinados para gerar dois filhos.
 
-### 🔹 Operadores Genéticos
-- **Seleção:** Torneio (3 indivíduos aleatórios)
-- **Crossover:** Ponto único
-- **Mutação:** Troca de bits com taxa de 10%
-- **Elitismo:** Mantém a melhor solução entre as gerações
+5. **Mutação**:
+   - A mutação altera aleatoriamente genes de um indivíduo com uma taxa de mutação pré-definida, com o objetivo de explorar novas soluções.
 
-### 🔹 Avaliação (Fitness)
-- Soma dos valores dos itens incluídos
-- Penalização: fitness = 0 se o peso ultrapassar a capacidade da mochila
+### Parâmetros do Algoritmo
+- **Tamanho da População**: 50
+- **Número de Gerações**: 100
+- **Taxa de Mutação**: 0.1
+- **Penalização de Soluções Inválidas**: Controlada por variável booleana `penalizar_solucoes_invalidas`
 
----
+### Funcionamento da Penalização
+- **Se `penalizar_solucoes_invalidas` for `True`**: Soluções que excedem a capacidade da mochila são penalizadas, atribuindo valor 0 a elas.
+- **Se `penalizar_solucoes_invalidas` for `False`**: Soluções inválidas são descartadas sem penalização explícita, permitindo que o algoritmo tente encontrar outras soluções viáveis.
 
-## 🧪 Resultados
+## Testes Realizados
 
-### 🧾 Parâmetros
-- População: 50 indivíduos
-- Gerações: 100
-- Taxa de mutação: 0.1
+### Instância Testada
+- **Número de Itens**: 10
+- **Pesos e Valores**: Conjunto aleatório de pesos e valores para 10 itens.
+- **Capacidade da Mochila**: 50
 
-### 🏆 Melhor Solução Encontrada
-```python
-Melhor solução: [1, 1, 0, 0]
-Valor total: 7
-Peso total: 5
-```
+### Resultados dos Testes
 
----
+1. **Com `penalizar_solucoes_invalidas = True`**:
+   - As soluções inválidas (com peso maior que a capacidade) foram penalizadas com valor 0.
+   - O algoritmo conseguiu encontrar uma solução viável que maximizou o valor dentro da capacidade da mochila.
 
-## 🧠 Dificuldades e Aprendizados
+2. **Com `penalizar_solucoes_invalidas = False`**:
+   - As soluções inválidas (com peso acima da capacidade) não foram penalizadas e, portanto, o algoritmo permitiu soluções que ultrapassaram a capacidade da mochila.
+   - Como esperado, algumas dessas soluções excederam a capacidade da mochila, mas o valor total foi maior.
 
-### ❗ Dificuldades
-- Encontrar um equilíbrio entre mutação e crossover
-- Evitar que a população convirja muito cedo (diversidade genética)
+## Conclusão
 
-### 📘 Aprendizados
-- O Algoritmo Genético se mostrou eficiente mesmo com instâncias pequenas
-- A penalização por peso excedente é essencial para manter soluções viáveis
-- A abordagem pode ser escalada facilmente para problemas maiores
+O algoritmo genético foi eficaz para encontrar uma solução otimizada para o problema da mochila 0/1. A penalização de soluções inválidas com `penalizar_solucoes_invalidas = True` ajudou a evitar soluções inviáveis. Quando a penalização foi desativada (`False`), o algoritmo buscou soluções mais arriscadas, mas não garantiu que todas as soluções estivessem dentro dos limites da capacidade da mochila.
 
----
+O próximo passo seria realizar ajustes finos, como a aumento da taxa de mutação e a melhora da inicialização da população para garantir uma convergência mais rápida e melhor desempenho em instâncias maiores (como 1000 ou 10000 itens).
 
-## 📌 Testes Futuros
-- Executar o algoritmo com 1.000 e 10.000 itens para avaliar escalabilidade
-- Comparar com outros algoritmos bio-inspirados como PSO, ACO e Cuckoo
+## Código Fonte
 
----
-
-## 🧾 Referências
-- Goldberg, D. E. *Genetic Algorithms in Search, Optimization and Machine Learning*
-- OpenAI / ChatGPT – auxílio na construção e revisão do código
+O código do algoritmo genético utilizado para resolver o problema da mochila 0/1 está disponível no arquivo `algoritmo_genetico_mochila.py`, que contém a implementação do algoritmo, funções de avaliação, mutação, crossover e controle da penalização de soluções inválidas.
