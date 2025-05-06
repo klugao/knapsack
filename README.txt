@@ -5,5 +5,5 @@ Como executar o algoritmo:
    python algoritmo_genetico_mochila.py
 3. O resultado da melhor solução será impresso no terminal.
 
-Desenvolvido por:
-Leonardo – Engenharia de Software – Católica SC
+Desenvolvido pela equipe:
+Eduardo Klug, Leonardo Rocha, Mateus de Faria, Mateus Mautone e Renan Iomes.

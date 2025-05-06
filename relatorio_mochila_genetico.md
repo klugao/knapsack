@@ -1,5 +1,7 @@
 # Relatório: Solução para o Problema da Mochila com Algoritmo Genético
 
+Equipe: Eduardo Klug, Leonardo Rocha, Mateus de Faria, Mateus Mautone e Renan Iomes.
+
 ## Objetivo
 
 O objetivo deste trabalho foi implementar uma solução para o Problema da Mochila 0/1 utilizando um Algoritmo Genético (GA). O algoritmo foi adaptado para maximizar o valor de itens selecionados, sem exceder a capacidade da mochila, utilizando técnicas de evolução genética: seleção, crossover, e mutação.
